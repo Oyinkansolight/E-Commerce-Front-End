@@ -50,13 +50,13 @@ export default function AddProductForm() {
 	const classes = useStyles();
 
 	const onSubmit = async (data, e) => {
-
 		const formValues = {};
 		formValues.name = data.name;
 		formValues.price = data.price;
 		formValues.qty = data.qty;
 		formValues.shortDescription = data.shortDescription;
 		formValues.description = data.description;
+		formValues.user = JSON.parse(localStorage.getItem("details"));
 
 		let bodyFormData = new FormData();
 
