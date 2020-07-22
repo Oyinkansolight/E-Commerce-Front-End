@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import CartList from "./CartList";
 import { CartContext } from "./CartContext";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import CartIcon from "./Cart";
 
 const useStyles = makeStyles((theme) => ({
 	typography: {
@@ -31,13 +32,8 @@ export default function CartPopover() {
 	const [cart, dispatchCart] = React.useContext(CartContext);
 	return (
 		<div>
-			<Button
-				variant='raised'
-				color='default'
-				startIcon={<ShoppingCartOutlinedIcon />}
-				onClick={handleClick}>
-				[{cart.cartCount}]
-			</Button>
+			
+			<CartIcon count={cart.cartCount} onClick={handleClick} />
 
 			<Popover
 				id={id}

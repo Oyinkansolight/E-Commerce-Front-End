@@ -113,6 +113,7 @@ export default function Login({ history }) {
 							"details",
 							JSON.stringify(response.data.user)
 						);
+						localStorage.setItem("id", response.data.user.id);
 					} else if (
 						user.blocked === false &&
 						user.confirmed === true &&
@@ -127,15 +128,19 @@ export default function Login({ history }) {
 							"details",
 							JSON.stringify(response.data.user)
 						);
-					} else {
+						localStorage.setItem("id", response.data.user.id);
+					} else if (
+						user.blocked === true &&
+						user.confirmed === true
+					) {
 						alert(
-							"Your account has not been confirmed or has been blocked please contact Admin"
+							"Your account has been blocked please contact Admin"
 						);
 					}
 				})
 				.catch(function (error) {
 					// console.log(error);
-					alert("Invalid credentials");
+					alert("Invalid credentials or account not confirmed");
 				});
 		});
 	};
@@ -170,25 +175,21 @@ export default function Login({ history }) {
 								required
 								fullWidth
 								id='email'
-								label='Email Address'
+								label='Email / Username'
 								name='identifier'
 								autoComplete='email'
 								autoFocus
 								inputRef={register({
 									required: true,
-									pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
 								})}
 								error={!!errors.identifier}
 							/>
-							{errors.identifier &&
-								errors.identifier.type === "pattern" && (
-									<ErrorSnack
-										message={"Valid Email required"}
-									/>
-								)}
+
 							{errors.identifier &&
 								errors.identifier.type === "required" && (
-									<ErrorSnack message={"Email required"} />
+									<ErrorSnack
+										message={"Email/Username required"}
+									/>
 								)}
 
 							<TextField

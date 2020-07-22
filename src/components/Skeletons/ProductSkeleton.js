@@ -125,7 +125,8 @@ function Media() {
 										<img
 											style={{ width: 310, height: 200 }}
 											alt={item.displayImg.name}
-											src={`${baseURL}${item.displayImg.formats.small.url}`}//Preferably small (Better Quality) thumbnail alternative
+											loading='lazy'
+											src={`${baseURL}${item.displayImg.formats.small.url}`} //Preferably small (Better Quality) thumbnail alternative
 										/>
 									</Link>
 								) : (

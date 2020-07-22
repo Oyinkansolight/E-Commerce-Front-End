@@ -87,11 +87,11 @@ export default function MerchantLanding() {
 						)}
 					</TableBody>
 				</Table>
-				<div className={classes.seeMore}>
+				{/* <div className={classes.seeMore}>
 					<Link color='primary' href='#'>
 						See more orders
 					</Link>
-				</div>
+				</div> */}
 			</div>
 		</React.Fragment>
 	);

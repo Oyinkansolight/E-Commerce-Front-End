@@ -5,189 +5,266 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Axios from "axios";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
+import Axios from "axios";
+import ErrorSnack from "../../components/Message/Error";
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	avatar: {
+		margin: theme.spacing(1),
+		backgroundColor: theme.palette.secondary.main,
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(3),
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
 }));
-var baseURL = "http://localhost:1337/";
 
-export default function Register() {
-    const classes = useStyles();
+export default function SignUp({history}) {
+	const classes = useStyles();
 
-    const { register, errors, handleSubmit, control, getValues } = useForm({
-        mode: "onChange",
-        reValidateMode: "onChange",
-    });
+	const { register, errors, handleSubmit } = useForm({
+		mode: "onChange",
+		reValidateMode: "onChange",
+	});
 
-    const onSubmit = (data, e) => {
-        e.preventDefault();
+	var baseURL = "http://localhost:1337/";
 
-        Axios.post(`${baseURL}auth/local/register`, data)
-            .then(function (response) {
-                console.log(response);
-                // window.location = "http://localhost:3000/";
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+	const onSubmit = (data, e) => {
+		e.preventDefault();
+		const roleType = {
+			_id: "5edea832bd12214a8551e4bb",
+            name: "Authenticated",
+            description: "Default role given to authenticated user.",
+            type: "authenticated",
+            id: "5edea832bd12214a8551e4bb"
+		};
+		data.role = roleType;
+		data.username = data.username.toLowerCase();
 
-        // Axios.post(`http://localhost:1337/auth/send-email-confirmation`, {
-        //   email: data.email,
-        // })
-        //   .then(function (response) {
-        //     console.log(response);
-        //     // window.location = "http://localhost:3000/";
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
-    };
+		Axios.post(`${baseURL}users`, data)
+			.then(function (response) {
+				history.push('/login')
+				alert('Check your E-Mail to confirm your account')
+				// console.log(response);
+			})
+			.catch(function (error) {
+				// console.log(error);
+			});
+	};
 
-    return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <form
-                    className={classes.form}
-                    noValidate
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="username"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstname"
-                                label="First Name"
-                                autoFocus
-                                inputRef={register({
-                                    required: true,
-                                })}
-                            />
-                        </Grid>
-                        {/* <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastname"
-                autoComplete="lname"
-                inputRef={register({
-                  required: true
-                })}
-              />
-            </Grid> */}
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                inputRef={register({
-                                    required: true,
-                                })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                inputRef={register({
-                                    required: true,
-                                })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        value="allowExtraEmails"
-                                        color="primary"
-                                    />
-                                }
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-            <Box mt={5}>
-                <Copyright />
-            </Box>
-        </Container>
-    );
+	return (
+		<Container component='main' maxWidth='xs'>
+			<CssBaseline />
+			<div className={classes.paper}>
+				<Avatar className={classes.avatar}>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component='h1' variant='h5'>
+					Sign up
+				</Typography>
+				<form
+					className={classes.form}
+					noValidate
+					onSubmit={handleSubmit(onSubmit)}>
+					<Grid container spacing={2}>
+						<Grid item xs={12} sm={6}>
+							<TextField
+								autoComplete='fname'
+								name='firstName'
+								variant='outlined'
+								required
+								fullWidth
+								id='firstName'
+								label='First Name'
+								autoFocus
+								inputRef={register({
+									required: true,
+								})}
+								error={!!errors.firstName}
+							/>
+						</Grid>
+
+						{errors.firstName &&
+							errors.firstName.type === "required" && (
+								<ErrorSnack message={"First name required"} />
+							)}
+
+						<Grid item xs={12} sm={6}>
+							<TextField
+								variant='outlined'
+								required
+								fullWidth
+								id='lastName'
+								label='Last Name'
+								name='lastName'
+								autoComplete='lname'
+								inputRef={register({
+									required: true,
+								})}
+								error={!!errors.lastName}
+							/>
+						</Grid>
+
+						{errors.lastName &&
+							errors.lastName.type === "required" && (
+								<ErrorSnack message={"Last name required"} />
+							)}
+
+						<Grid item xs={12}>
+							<TextField
+								variant='outlined'
+								required
+								fullWidth
+								id='username'
+								label='User Name'
+								name='username'
+								autoComplete='username'
+								inputRef={register({
+									required: true,
+									validate: async (value) =>
+										await Axios.get(`${baseURL}users`)
+											.then(function (response) {
+												for (let i of response.data) {
+													if (
+														i.username.toLowerCase() ===
+															value.toLowerCase() ||
+														value.toLowerCase() ===
+															"admin" ||
+														value.toLowerCase() ===
+															"administrator"
+													)
+														return false;
+												}
+											})
+											.catch(function (error) {
+												console.log(error);
+											}),
+								})}
+								error={!!errors.username}
+							/>
+						</Grid>
+
+						{errors.username &&
+							errors.username.type === "required" && (
+								<ErrorSnack message={"User name required"} />
+							)}
+
+						{errors.username &&
+							errors.username.type === "validate" && (
+								<ErrorSnack
+									message={
+										"Sorry! Username already taken by another user"
+									}
+								/>
+							)}
+
+						<Grid item xs={12}>
+							<TextField
+								variant='outlined'
+								required
+								fullWidth
+								id='email'
+								label='Email Address'
+								name='email'
+								autoComplete='email'
+								inputRef={register({
+									required: true,
+									pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+								})}
+								error={!!errors.email}
+							/>
+						</Grid>
+
+						{errors.email && errors.email.type === "required" && (
+							<ErrorSnack message={"Email required"} />
+						)}
+
+						{errors.email && errors.email.type === "pattern" && (
+							<ErrorSnack
+								message={"Ooops! That is not a valid e-mail"}
+							/>
+						)}
+
+						<Grid item xs={12}>
+							<TextField
+								variant='outlined'
+								required
+								fullWidth
+								name='password'
+								label='Password'
+								type='password'
+								id='password'
+								autoComplete='current-password'
+								inputRef={register({
+									required: true,
+									minLength: 8,
+									pattern: /^(?=.*\d)(?=.*[a-z]*[A-Z])[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-]{8,30}$/,
+								})}
+								error={!!errors.password}
+							/>
+						</Grid>
+
+						{errors.password &&
+							errors.password.type === "required" && (
+								<ErrorSnack message={"Password required"} />
+							)}
+
+						{errors.password &&
+							errors.password.type === "minLength" && (
+								<ErrorSnack message={"Too short!"} />
+							)}
+
+						{errors.password &&
+							errors.password.type === "pattern" && (
+								<ErrorSnack
+									message={
+										"Letters and at least 1 number and Uppercase letter please! Special characters allowed"
+									}
+								/>
+							)}
+					</Grid>
+					<Button
+						type='submit'
+						fullWidth
+						variant='contained'
+						color='primary'
+						className={classes.submit}
+						disabled={
+							!!errors.email ||
+							!!errors.password ||
+							!!errors.firstName ||
+							!!errors.lastName ||
+							!!errors.username
+						}>
+						Sign Up
+					</Button>
+					<Grid container justify='flex-end'>
+						<Grid item>
+							<Link to='/login' variant='body2'>
+								Already have an account? Sign in
+							</Link>
+						</Grid>
+					</Grid>
+				</form>
+			</div>
+			<Box mt={5}></Box>
+		</Container>
+	);
 }
