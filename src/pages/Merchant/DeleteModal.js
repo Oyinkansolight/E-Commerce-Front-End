@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var baseURL = "http://localhost:1337/";
 
 export default function DeleteModal({ history, id }) {
 	const classes = useStyles();
@@ -59,7 +58,7 @@ export default function DeleteModal({ history, id }) {
 							size='small'
 							color='secondary'
 							onClick={() => {
-								Axios.delete(`${baseURL}products/${id}`, {
+								Axios.delete(`${process.env.REACT_APP_BASEURL}/products/${id}`, {
 									headers: {
 										Authorization: `Bearer ${localStorage.getItem(
 											"token"

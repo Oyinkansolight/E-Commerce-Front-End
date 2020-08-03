@@ -31,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var baseURL = "http://localhost:1337/";
-
 export default function UserLanding() {
 	const classes = useStyles();
 	const [dense, setDense] = React.useState(false);
@@ -40,7 +38,7 @@ export default function UserLanding() {
 	const [orders, setOrders] = React.useState([]);
 
 	React.useEffect(() => {
-		Axios.get(`${baseURL}orders`, {
+		Axios.get(`${process.env.REACT_APP_BASEURL}/orders`, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},

@@ -64,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var baseURL = "http://localhost:1337/";
 
 export default function Login({ history }) {
 	var jwt_token = localStorage.getItem("token");
@@ -95,7 +94,7 @@ export default function Login({ history }) {
 		e.preventDefault();
 
 		auth.login(() => {
-			Axios.post(`${baseURL}auth/local`, data)
+			Axios.post(`${process.env.REACT_APP_BASEURL}/auth/local`, data)
 				.then(function (response) {
 					// console.log(response.data)
 					const user = response.data.user;

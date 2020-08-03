@@ -12,6 +12,7 @@ import {
 
 import PhotoLibraryTwoToneIcon from "@material-ui/icons/PhotoLibraryTwoTone";
 import InsertPhotoTwoToneIcon from "@material-ui/icons/InsertPhotoTwoTone";
+import CircularProgressWithLabel from "../../components/Loading/PercentProgress";
 import SaveIcon from "@material-ui/icons/Save";
 import Axios from "axios";
 import { useForm } from "react-hook-form";
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var baseURL = "http://localhost:1337/";
 
 export default function EditProductForm({ match, history }) {
 	const { register, errors, handleSubmit, control, getValues } = useForm({
@@ -48,13 +48,14 @@ export default function EditProductForm({ match, history }) {
 		reValidateMode: "onChange",
 	});
 	const classes = useStyles();
+	const [progress, setProgress] = React.useState(0);
 	const [values, setValues] = React.useState();
 	const [isLoading, setIsLoading] = React.useState(true);
 
 	React.useEffect(() => {
-		Axios.get(`${baseURL}products/${match.params.id}`)
+		Axios.get(`${process.env.REACT_APP_BASEURL}/products/${match.params.id}`)
 			.then(function (response) {
-				console.log(response);
+				// console.log(response);
 				setValues(response.data);
 				setIsLoading(false);
 			})
@@ -89,15 +90,21 @@ export default function EditProductForm({ match, history }) {
 
 		await Axios({
 			method: "PUT",
-			url: `${baseURL}products/${match.params.id}`,
+			url: `${process.env.REACT_APP_BASEURL}/products/${match.params.id}`,
 			data: bodyFormData,
-			// onUploadProgress: (progress) => console.log("Uploading..."),
+			onUploadProgress: function (progressEvent) {
+				setProgress(
+					Math.round(
+						(progressEvent.loaded * 100) / progressEvent.total
+					)
+				);
+			},
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
 		})
 			.then(function (response) {
-				console.log(response);
+				// console.log(response);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -247,6 +254,17 @@ export default function EditProductForm({ match, history }) {
 								</label>
 
 								<br />
+
+									{progress ? (
+										<>
+											<br />
+											<CircularProgressWithLabel value={progress} />
+											<br />
+										</>
+									) : (
+											""
+										)}
+
 								<Button
 									variant='contained'
 									color='primary'

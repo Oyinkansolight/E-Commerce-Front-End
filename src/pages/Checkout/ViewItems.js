@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var baseURL = "http://localhost:1337";
 
 export default function ViewItems() {
   const classes = useStyles();
@@ -45,7 +44,7 @@ export default function ViewItems() {
                     <Avatar
                         style={{marginRight: "0.5rem"}}
                         alt={item.name}
-                        src={`${baseURL}${item.displayImg.formats.thumbnail.url}`}
+                        src={`${process.env.REACT_APP_BASEURL}${item.displayImg.formats.thumbnail.url}`}
                     />
                 <ListItemText primary={`${item.name}`} /> <span>${item.price * item.quantity}</span>
               </ListItem>

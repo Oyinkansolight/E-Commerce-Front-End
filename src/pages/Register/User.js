@@ -44,8 +44,6 @@ export default function SignUp({ history }) {
 		reValidateMode: "onChange",
 	});
 
-	var baseURL = "http://localhost:1337/";
-
 	const onSubmit = (data, e) => {
 		e.preventDefault();
 		const roleType = {
@@ -58,7 +56,7 @@ export default function SignUp({ history }) {
 		data.role = roleType;
 		data.username = data.username.toLowerCase();
 
-		Axios.post(`${baseURL}users`, data)
+		Axios.post(`${process.env.REACT_APP_BASEURL}/users`, data)
 			.then(function (response) {
 				history.push("/login");
 				alert("Check your E-Mail to confirm your account");
@@ -68,7 +66,7 @@ export default function SignUp({ history }) {
 				// console.log(error);
 			});
 
-		Axios.post(`${baseURL}auth/send-email-confirmation`, {
+		Axios.post(`${process.env.REACT_APP_BASEURL}/auth/send-email-confirmation`, {
 			email: data.email,
 		})
 			.then((response) => {
@@ -151,7 +149,7 @@ export default function SignUp({ history }) {
 								inputRef={register({
 									required: true,
 									validate: async (value) =>
-										await Axios.get(`${baseURL}users`)
+										await Axios.get(`${process.env.REACT_APP_BASEURL}/users`)
 											.then(function (response) {
 												for (let i of response.data) {
 													if (

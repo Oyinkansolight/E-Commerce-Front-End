@@ -11,45 +11,44 @@ import Grid from "@material-ui/core/Grid";
 import HomeProducts from "../../components/Skeletons/HomeProducts";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 0.25,
-    },
-    paper: {
-        padding: theme.spacing(0),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-    },
+	root: {
+		flexGrow: 0.25,
+	},
+	paper: {
+		padding: theme.spacing(0),
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+	},
 }));
 
 function Home() {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    return (
-        <>
-            <Slider />
-            <Container maxWidth="xl">
-                <CssBaseline />
-                <div className={classes.root}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Paper
-                                className={classes.paper}
-                                style={{ boxShadow: "none" }}
-                            >
-                                <HomeProducts />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </div>
-            </Container>
+	return (
+		<>
+			<Slider />
+			<Container maxWidth='xl'>
+				<CssBaseline />
+				<div className={classes.root}>
+					<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Paper
+								className={classes.paper}
+								style={{ boxShadow: "none" }}>
+								<HomeProducts />
+							</Paper>
+						</Grid>
+					</Grid>
+				</div>
+			</Container>
 
-            {/* <HomeProducts /> */}
+			{/* <HomeProducts /> */}
 
-            <CategoryBanner />
+			{/* <CategoryBanner />
 
-            <Banner />
-        </>
-    );
+			<Banner /> */}
+		</>
+	);
 }
 
 export default Home;

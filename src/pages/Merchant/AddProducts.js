@@ -12,6 +12,7 @@ import {
 
 import PhotoLibraryTwoToneIcon from "@material-ui/icons/PhotoLibraryTwoTone";
 import InsertPhotoTwoToneIcon from "@material-ui/icons/InsertPhotoTwoTone";
+import CircularProgressWithLabel from "../../components/Loading/PercentProgress";
 import SaveIcon from "@material-ui/icons/Save";
 import Axios from "axios";
 import { useForm } from "react-hook-form";
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-var baseURL = "http://localhost:1337/";
 
 export default function AddProductForm() {
 	const { register, errors, handleSubmit, control, getValues } = useForm({
@@ -48,6 +48,8 @@ export default function AddProductForm() {
 		reValidateMode: "onChange",
 	});
 	const classes = useStyles();
+
+	const [progress, setProgress] = React.useState(0);
 
 	const onSubmit = async (data, e) => {
 		const formValues = {};
@@ -72,15 +74,21 @@ export default function AddProductForm() {
 
 		await Axios({
 			method: "POST",
-			url: `${baseURL}products`,
+			url: `${process.env.REACT_APP_BASEURL}/products`,
 			data: bodyFormData,
-			// onUploadProgress: (progress) => console.log("Uploading..."),
+			onUploadProgress: function (progressEvent) {
+				setProgress(
+					Math.round(
+						(progressEvent.loaded * 100) / progressEvent.total
+					)
+				);
+			},
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
 		})
 			.then(function (response) {
-				console.log(response);
+				// console.log(response);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -206,6 +214,17 @@ export default function AddProductForm() {
 						</label>
 
 						<br />
+
+						{progress ? (
+							<>
+								<br />
+								<CircularProgressWithLabel value={progress} />
+								<br />
+							</>
+						) : (
+							""
+						)}
+
 						<Button
 							variant='contained'
 							color='primary'

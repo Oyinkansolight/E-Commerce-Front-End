@@ -40,14 +40,14 @@ export default function UserOrders() {
     const [orders, setOrders] = React.useState([]);
 
     React.useEffect(() => {
-        Axios.get('http://localhost:1337/orders', {
+        Axios.get(`${process.env.REACT_APP_BASEURL}/orders`, {
             headers: {
                 Authorization:
                 `Bearer ${localStorage.getItem('token')}`,
             },
         })
         .then(function (response) {
-            console.log(response.data);
+            // console.log(response.data);
             setOrders(response.data)
         })
         .catch(function (error) {

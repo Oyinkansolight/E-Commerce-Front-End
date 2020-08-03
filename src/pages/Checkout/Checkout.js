@@ -17,7 +17,6 @@ import { CartContext } from "../../components/Cart/CartContext"
 
 
 
-var baseURL = "http://localhost:1337/";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -91,7 +90,7 @@ export default function Checkout() {
 
     if (activeStep === 2) {
 
-      Axios.post(`${baseURL}orders`, formData)
+      Axios.post(`${process.env.REACT_APP_BASEURL}/orders`, formData)
       .then(function (response) {
         // console.log(response.data);
       })
@@ -102,7 +101,7 @@ export default function Checkout() {
       cart.currentCart.map(item => {
         let newQty = item.qty - item.quantity
 
-        Axios.put(`${baseURL}products/${item.id}`, {
+        Axios.put(`${process.env.REACT_APP_BASEURL}/products/${item.id}`, {
           qty: newQty
         })
         .then(function (response) {

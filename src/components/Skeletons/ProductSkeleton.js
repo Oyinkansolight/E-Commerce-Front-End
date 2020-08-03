@@ -12,8 +12,6 @@ import { CartContext } from "../Cart/CartContext";
 import { Link } from "react-router-dom";
 import ViewRating from "../../components/Rating/ViewRating";
 
-var baseURL = "http://localhost:1337";
-
 const productReducer = (state, action) => {
 	switch (action.type) {
 		case "START_FETCH_INIT":
@@ -65,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Media() {
+function Media({ searchTerm }) {
 	const [products, dispatchProducts] = React.useReducer(productReducer, {
 		data: [],
 		isLoading: false,
@@ -83,7 +81,14 @@ function Media() {
 	React.useEffect(() => {
 		dispatchProducts({ type: "START_FETCH_INIT" });
 
-		Axios.get(`${baseURL}/products?_limit=${products.limit}`)
+		let searchValue = "?";
+		if (searchTerm) {
+			searchValue = `?name_contains=${searchTerm}&&`;
+		}
+
+		Axios.get(
+			`${process.env.REACT_APP_BASEURL}/products${searchValue}_limit=${products.limit}`
+		)
 			.then(function (response) {
 				setTimeout(
 					() =>
@@ -95,7 +100,7 @@ function Media() {
 				);
 			})
 			.catch(() => dispatchProducts({ type: "START_FETCH_FAILURE" }));
-	}, [products.limit]);
+	}, [products.limit, searchTerm]);
 
 	const handleAddToCart = (item) => {
 		dispatchCart({ type: "ADD_TO_CART", payload: item });
@@ -111,22 +116,23 @@ function Media() {
 
 			{(products.isLoading ? Array.from([]) : products.data).map(
 				(item, index) => (
-					<Grid item xs style={{ flexGrow: 0.25 }} key={item.key}>
+					<Grid item xs style={{ flexGrow: 0.25 }}>
 						<Paper
 							className={classes.paper}
 							style={{ boxShadow: "none" }}>
 							<Box
-								key={item._id}
+								key={item.id}
 								width={310}
 								marginRight={0.3}
 								my={5}>
 								{item ? (
 									<Link to={`/shop/${item.id}`}>
 										<img
+											key={item.id}
 											style={{ width: 310, height: 200 }}
 											alt={item.displayImg.name}
 											loading='lazy'
-											src={`${baseURL}${item.displayImg.formats.small.url}`} //Preferably small (Better Quality) thumbnail alternative
+											src={`${process.env.REACT_APP_BASEURL}${item.displayImg.formats.small.url}`} //Preferably small (Better Quality) thumbnail alternative
 										/>
 									</Link>
 								) : (
@@ -138,7 +144,7 @@ function Media() {
 								)}
 
 								{item ? (
-									<Box pr={2}>
+									<Box pr={2} key={item.id}>
 										<Link to={`/shop/${item.id}`}>
 											<Typography
 												gutterBottom
@@ -181,10 +187,10 @@ Media.propTypes = {
 	loading: PropTypes.bool,
 };
 
-export default function ProductSkeleton() {
+export default function ProductSkeleton({ searchTerm }) {
 	return (
 		<Box overflow='hidden'>
-			<Media />
+			<Media searchTerm={searchTerm} />
 		</Box>
 	);
 }

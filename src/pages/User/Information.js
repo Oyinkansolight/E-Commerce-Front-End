@@ -32,8 +32,6 @@ const useStyles = makeStyles({
 	},
 });
 
-var baseURL = "http://localhost:1337/";
-
 const userReducer = (state, action) => {
 	switch (action.type) {
 		case "INIT_FETCH":
@@ -76,7 +74,7 @@ export default function UserDetails() {
 
 		dispatchUser({ type: "INIT_FETCH" });
 
-		Axios.get(`${baseURL}users/${id}`)
+		Axios.get(`${process.env.REACT_APP_BASEURL}/users/${id}`)
 			.then(function (response) {
 				dispatchUser({
 					type: "USER_GET_SUCCESS",

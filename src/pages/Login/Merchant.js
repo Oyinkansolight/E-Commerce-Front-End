@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-var baseURL = "http://localhost:1337/";
 
 export default function MerchantLogin() {
     const classes = useStyles();
@@ -80,10 +79,10 @@ export default function MerchantLogin() {
         // loginData.append("identifier", data.email);
         // loginData.append("password", data.password);
 
-        Axios.post(`${baseURL}auth/local`, data)
+        Axios.post(`${process.env.REACT_APP_BASEURL}/auth/local`, data)
             .then(function (response) {
-                console.log(response);
-                window.location = "http://localhost:3000/merchant";
+                // console.log(response);
+                window.location = `${process.env.REACT_APP_FRONT_END}/merchant`;
             })
             .catch(function (error) {
                 console.log(error);

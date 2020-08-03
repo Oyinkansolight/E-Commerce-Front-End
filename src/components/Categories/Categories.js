@@ -9,78 +9,78 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: "100%",
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
-    },
+	root: {
+		width: "100%",
+		maxWidth: 360,
+		backgroundColor: theme.palette.background.paper,
+	},
 }));
 
 function Animations() {
-    const classes = useStyles();
-    return (
-        <div className={classes.root}>
-            {/* <Skeleton /> */}
-            {/* <Skeleton animation={false} /> */}
-            <Skeleton animation="wave" height={40} />
-        </div>
-    );
+	const classes = useStyles();
+	return (
+		<div className={classes.root}>
+			{/* <Skeleton /> */}
+			{/* <Skeleton animation={false} /> */}
+			<Skeleton animation='wave' height={40} />
+		</div>
+	);
 }
 
 export default function Categories() {
-    const [categories, setCategories] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(false);
+	const [categories, setCategories] = React.useState([]);
+	const [isLoading, setIsLoading] = React.useState(false);
 
-    React.useEffect(() => {
-        setIsLoading(true);
+	React.useEffect(() => {
+		setIsLoading(true);
 
-        Axios.get("http://localhost:1337/categories")
-            .then(function (response) {
-                setTimeout(() => setCategories(response.data), 1500);
-                setIsLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }, []);
+		Axios.get(`${process.env.REACT_APP_BASEURL}/categories`)
+			.then(function (response) {
+				setTimeout(() => setCategories(response.data), 1500);
+				setIsLoading(false);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}, []);
 
-    function ListItemLink(props) {
-        return <ListItem button component="a" {...props} />;
-    }
+	function ListItemLink(props) {
+		return <ListItem button component='a' {...props} />;
+	}
 
-    const AllCategories = () => (
-        <>
-            {!isLoading ? (
-                categories.map((category) => (
-                    <>
-                        <ListItemLink href="#simple-list" key={category.id}>
-                            <ListItemText
-                                key={category.id}
-                                primary={`${category.name}`}
-                            />
-                        </ListItemLink>
-                        <Divider />
-                    </>
-                ))
-            ) : (
-                <>
-                    <Animations />
-                    <Animations />
-                    <Animations />
-                    <Animations />
-                    <Animations />
-                    <Animations />
-                </>
-            )}
-        </>
-    );
+	const AllCategories = () => (
+		<>
+			{!isLoading ? (
+				categories.map((category) => (
+					<>
+						<ListItemLink key={category.id}>
+							<ListItemText
+								key={category.id}
+								primary={`${category.name}`}
+							/>
+						</ListItemLink>
+						<Divider key='divider' />
+					</>
+				))
+			) : (
+				<>
+					<Animations />
+					<Animations />
+					<Animations />
+					<Animations />
+					<Animations />
+					<Animations />
+				</>
+			)}
+		</>
+	);
 
-    const classes = useStyles();
-    return (
-        <div className={classes.root}>
-            <List component="nav" aria-label="secondary mailbox folders">
-                <AllCategories />
-            </List>
-        </div>
-    );
+	const classes = useStyles();
+	return (
+		<div className={classes.root}>
+			<List component='nav' aria-label='secondary mailbox folders'>
+				<AllCategories />
+			</List>
+		</div>
+	);
 }

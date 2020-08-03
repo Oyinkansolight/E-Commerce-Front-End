@@ -12,93 +12,115 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { CartContext } from "../Cart/CartContext";
 
-
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: "100%",
-        maxWidth: "36ch",
-        backgroundColor: theme.palette.background.paper,
-    },
-    inline: {
-        display: "inline",
-    },
+	root: {
+		width: "100%",
+		maxWidth: "36ch",
+		backgroundColor: theme.palette.background.paper,
+	},
+	inline: {
+		display: "inline",
+	},
 }));
 
 var baseURL = "http://localhost:1337";
 
 export default function CartList() {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    const [cart, dispatchCart] = React.useContext(CartContext);
+	const [cart, dispatchCart] = React.useContext(CartContext);
 
-    const handleRemoveItem = (item) => {
-        dispatchCart({type: "REMOVE_FROM_CART", payload: item})
-    };
+	const handleRemoveItem = (item) => {
+		dispatchCart({ type: "REMOVE_FROM_CART", payload: item });
+	};
 
-    return (
-        <List className={classes.root}>
-            {cart.cartCount < 1 ? (
-                <ListItem alignItems="flex-start">
-                    <ListItemText
-                        primary="Your cart is empty"
-                        secondary={
-                            <React.Fragment>
-                                <Typography
-                                    component="span"
-                                    variant="body2"
-                                    className={classes.inline}
-                                    color="textPrimary"
-                                >
-                                    {/* {item.name} */}
-                                </Typography>
-                                {/* {item.price} */}
-                            </React.Fragment>
-                        }
-                    />
-                </ListItem>
-            ) : (
-                cart.currentCart.map((item) => (
-                    <ListItem alignItems="flex-start" key={item.id}>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src={`${baseURL}${item.displayImg.formats.thumbnail.url}`}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={item.name}
-                            secondary={
-                                <React.Fragment>
-                                    <Typography
-                                        component="span"
-                                        variant="body2"
-                                        className={classes.inline}
-                                        color="textPrimary"
-                                    >
-                                        ${item.price}
-                                    </Typography>
-                                </React.Fragment>
-                            }
-                        />
+	return (
+		<List className={classes.root}>
+			{cart.cartCount < 1 ? (
+				<ListItem alignItems='flex-start'>
+					<ListItemText
+						primary='Your cart is empty'
+						style={{ height: "0" }}
+					/>
+				</ListItem>
+			) : (
+				cart.currentCart.map((item) => (
+					<>
+						<ListItem alignItems='flex-start' key={item.id}>
+							<ListItemAvatar>
+								<Avatar
+									alt='cart image'
+									src={`${baseURL}${item.displayImg.formats.thumbnail.url}`}
+								/>
+							</ListItemAvatar>
+							<ListItemText
+								style={{ width: "10rem" }}
+								primary={
+									<>
+										<p
+											style={{
+												width: "10rem",
+												height: "0.5rem",
+												marginTop: "0rem",
+											}}>
+											{item.name}
+										</p>
+									</>
+								}
+								secondary={
+									<React.Fragment>
+										<Typography
+											component='span'
+											variant='body2'
+											className={classes.inline}
+											color='textPrimary'>
+											<span
+												style={{ marginLeft: "6rem" }}>
+												${item.price}
+											</span>
+										</Typography>
+									</React.Fragment>
+								}
+							/>
 
-                        <DeleteIcon
-                            onClick={() => handleRemoveItem(item)}
-                            color="secondary"
-                        />
-                        <Divider variant="inset" component="li" />
-                    </ListItem>
-                ))
-            )}
+							<DeleteIcon
+								style={{
+									marginLeft: "10rem",
+									width: "1.1rem",
+									marginTop: "0.3rem",
+								}}
+								onClick={() => handleRemoveItem(item)}
+								color='secondary'
+							/>
+						</ListItem>
 
-            {cart.cartCount > 0 && <ListItemText primary={`Total :$${cart.totalPrice}`} />}
-            <br />
+						<Divider
+							key="divider"
+							variant='inset'
+							component='li'
+							style={{ marginLeft: "22px", marginRight: "22px" }}
+						/>
+					</>
+				))
+			)}
 
-            {cart.cartCount && 
-                <Link to="/cart" stye={{ textDecoration: "none" }}>
-                    <Button color="primary">Open Cart</Button>
-                </Link>
-            }
-            
-        </List>
-    );
+			{!cart.cartCount < 1 ? (
+				<ListItemText
+					primary={`Total :$${cart.totalPrice}`}
+					style={{ float: "right", margin: "1% 7% 0 0" }}
+				/>
+			) : (
+				""
+			)}
+			<br />
+
+			{!cart.cartCount < 1 ? (
+				<Link to='/cart' stye={{ textDecoration: "none" }}>
+					<Button color='primary'>Open Cart</Button>
+				</Link>
+			) : (
+				""
+			)}
+		</List>
+	);
 }

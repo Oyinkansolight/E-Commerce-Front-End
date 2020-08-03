@@ -15,7 +15,7 @@ const usePersistentData = (props) => {
 	const [data, setData] = React.useState([]);
 
 	React.useEffect(() => {
-		Axios.get(`http://localhost:1337/products?_limit=4`)
+		Axios.get(`${process.env.REACT_APP_BASEURL}/products?_limit=4`)
 			.then(function (response) {
 				setData(response.data);
 				// console.log(response.data)
@@ -58,7 +58,7 @@ function Media(props) {
 										style={{ width: 310, height: 200 }}
 										alt={item.displayImg.name}
 										loading='lazy'
-										src={`http://localhost:1337${item.displayImg.formats.small.url}`}
+										src={`${process.env.REACT_APP_BASEURL}${item.displayImg.formats.small.url}`}
 									/>
 								</Link>
 							) : (

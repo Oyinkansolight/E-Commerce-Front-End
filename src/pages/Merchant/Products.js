@@ -21,7 +21,6 @@ const useStyles = makeStyles({
 	},
 });
 
-var baseURL = "http://localhost:1337";
 export default function MerchantProducts({ history }) {
 	const classes = useStyles();
 
@@ -30,7 +29,7 @@ export default function MerchantProducts({ history }) {
 	const [products, setProducts] = React.useState([]);
 
 	React.useEffect(() => {
-		Axios.get("http://localhost:1337/products", {
+		Axios.get(`${process.env.REACT_APP_BASEURL}/products`, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
@@ -63,7 +62,7 @@ export default function MerchantProducts({ history }) {
 													component='img'
 													alt='Contemplative Reptile'
 													height='140'
-													image={`${baseURL}${product.displayImg.formats.thumbnail.url}`}
+													image={`${process.env.REACT_APP_BASEURL}${product.displayImg.formats.thumbnail.url}`}
 													title='Contemplative Reptile'
 												/>
 												<CardContent>

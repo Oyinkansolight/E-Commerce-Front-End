@@ -13,7 +13,7 @@ export default function PaymentForm() {
   const [email, setEmail] = React.useState("")
 
   const handleChange = (e) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setEmail(e.target.value)
   }
   

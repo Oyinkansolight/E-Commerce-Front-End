@@ -16,7 +16,7 @@ export default function ViewRating() {
 
   return (
     <div className={classes.root}>
-      <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
+      <Rating name="half-rating-read" defaultValue={4.5} precision={0.5} readOnly />
     </div>
   );
 }

@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-var baseURL = "http://localhost:1337";
 
 const SingleProduct = ({ match }) => {
     const classes = useStyles();
@@ -36,7 +35,7 @@ const SingleProduct = ({ match }) => {
     React.useEffect(() => {
         const fetchData = async () => {
             const result = await Axios.get(
-                `${baseURL}/products?id=${match.params.id}`
+                `${process.env.REACT_APP_BASEURL}/products?id=${match.params.id}`
             );
 
             setData(result.data[0]);

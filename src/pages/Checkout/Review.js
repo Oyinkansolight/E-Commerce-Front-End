@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import { CartContext } from "../../components/Cart/CartContext"
 
-var baseURL = "http://localhost:1337";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
