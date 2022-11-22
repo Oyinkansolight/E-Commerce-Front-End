@@ -18,7 +18,7 @@
     "react-hook-form-devtools": "^1.2.0",
     "react-paystack": "^3.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "react-swipeable-views": "^0.13.9",
     "uniqid": "^5.2.0"
   },
